@@ -1,0 +1,61 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "agent",
+            "if": "Bash(git commit *)",
+            "prompt": "Un commit va être créé. Avec Glob, Grep et Read, cherche TODO ou FIXME dans les fichiers applicatifs du projet (.js, .jsx, .ts, .tsx, .sql). Exclue .git, .claude, mon-arsenal, node_modules, .next et les fichiers générés. Ne suppose aucun nom de fichier. Si un marqueur reste, réponds {\"ok\": false, \"reason\": \"le fichier et le marqueur restant\"} ; sinon {\"ok\": true}. Si la lecture échoue, refuse en expliquant pourquoi. $ARGUMENTS",
+            "statusMessage": "Inspection pré-commit…"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=$(jq -r '.tool_input.file_path'); case \"$f\" in *.env) echo \"⛔ Écriture dans .env bloquée par le hook\" >&2; exit 2;; esac"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Évalue le dernier message de Claude. S'il pose une question, attend une décision ou un feu vert de l'utilisateur, attend des agents ou des tâches en arrière-plan, ou rapporte un refus ou un blocage, réponds {\"ok\": true}. Sinon, s'il annonce une tâche demandée encore à faire, réponds {\"ok\": false, \"reason\": \"ce qui reste à faire\"}. Sinon, réponds {\"ok\": true}.",
+            "statusMessage": "Le juge vérifie…"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "permission_prompt|idle_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ \"$(uname -s)\" = \"Darwin\" ]; then osascript -e 'display notification \"Claude attend ton feu vert\" with title \"Claude Code\"'; else echo '{\"systemMessage\": \"Claude Code : Claude attend ton feu vert\"}'; fi"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "file=$(jq -r '.tool_input.file_path // empty'); if [ -x ./node_modules/.bin/prettier ] && [ -n \"$file\" ]; then ./node_modules/.bin/prettier --write --ignore-unknown \"$file\"; else echo '[INFO] Prettier local absent ou aucun fichier : formatage non exécuté.' >&2; fi",
+            "statusMessage": "Prettier reformate…",
+            "async": true
+          }
+        ]
+      }
+    ]
+  }
+}

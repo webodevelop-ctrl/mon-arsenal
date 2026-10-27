@@ -1,0 +1,13 @@
+{
+  "name": "mes-plugins",
+  "owner": {
+    "name": "webodevelop-ctrl"
+  },
+  "plugins": [
+    {
+      "name": "mon-arsenal",
+      "source": "./",
+      "description": "Arsenal personnel : skills, sous-agents et hooks de garde-fous."
+    }
+  ]
+}

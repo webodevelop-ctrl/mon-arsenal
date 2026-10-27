@@ -1,0 +1,8 @@
+{
+  "name": "mon-arsenal",
+  "version": "1.0.0",
+  "description": "Arsenal personnel : skills (audit de sécurité, scaffolds, migration, déploiement staging), sous-agents de relecture/test/accessibilité et hooks de garde-fous (pré-commit, .env, Prettier, notification).",
+  "author": {
+    "name": "webodevelop-ctrl"
+  }
+}
