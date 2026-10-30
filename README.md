@@ -74,8 +74,9 @@ Le plugin n'embarque aucun serveur MCP ; chaque projet ou poste doit les reconne
 - Hook de notification : `osascript` n'est exécuté que sur macOS (`uname -s` = `Darwin`) ; ailleurs, le hook émet
   un `systemMessage` affiché dans le terminal de Claude Code.
 - Hooks `jq` / Prettier : POSIX shell uniquement ; sous Windows natif (sans Git Bash ou WSL), ils ne fonctionneront pas.
-- Hook pré-commit : exclut `.claude` et `mon-arsenal` de la recherche TODO/FIXME ; il s'appuie sur Glob/Grep/Read,
-  qui doivent être autorisés pour que la vérification puisse aboutir (sinon il refuse le commit).
+- Hook pré-commit (hook `command`, git requis) : `git grep --no-index --exclude-standard` cherche TODO/FIXME dans les
+  fichiers `.js`, `.jsx`, `.ts`, `.tsx` et `.sql` que le `.gitignore` n'exclut pas, hors `.claude` et `mon-arsenal`,
+  dépôt Git ou pas ; il ne refuse le commit (exit 2) que s'il trouve un marqueur.
 
 ## `mon-arsenal:Explore` : agent namespacé
 

@@ -5,9 +5,9 @@
         "matcher": "Bash",
         "hooks": [
           {
-            "type": "agent",
+            "type": "command",
             "if": "Bash(git commit *)",
-            "prompt": "Un commit va être créé. Avec Glob, Grep et Read, cherche TODO ou FIXME dans les fichiers applicatifs du projet (.js, .jsx, .ts, .tsx, .sql). Exclue .git, .claude, mon-arsenal, node_modules, .next et les fichiers générés. Ne suppose aucun nom de fichier. Si un marqueur reste, réponds {\"ok\": false, \"reason\": \"le fichier et le marqueur restant\"} ; sinon {\"ok\": true}. Si la lecture échoue, refuse en expliquant pourquoi. $ARGUMENTS",
+            "command": "m=$(git grep --no-index --exclude-standard -nIE 'TODO|FIXME' -- '*.js' '*.jsx' '*.ts' '*.tsx' '*.sql' ':!.claude' ':!mon-arsenal'); [ -z \"$m\" ] || { echo \"⛔ Commit refusé, marqueur restant : $m\" >&2; exit 2; }",
             "statusMessage": "Inspection pré-commit…"
           }
         ]
