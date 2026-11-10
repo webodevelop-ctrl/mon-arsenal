@@ -19,8 +19,9 @@ Crée l'endpoint d'API pour la ressource **$ressource** dans ce projet :
    - la validation des entrées (corps, paramètres, identifiants), avec la
      bibliothèque déjà utilisée, sinon des gardes simples sans nouvelle
      dépendance ; les erreurs de validation renvoient 400 avec un message clair ;
-   - l'accès aux données isolé dans un module dédié (dépôt/repository), injecté
-     dans les routes pour pouvoir être remplacé par un double dans les tests.
+   - l'accès aux données isolé dans un module dédié (dépôt/repository), branché
+     sur la connexion du projet (celle que décrit `CLAUDE.md`) et injecté dans
+     les routes pour pouvoir être remplacé par un double dans les tests.
    Utilise `.ts` si TypeScript est configuré, sinon `.js`.
 3. Ajoute le fichier de test adjacent avec le runner du projet
    (sinon `node:test`) :
@@ -35,8 +36,10 @@ Règles :
 - Aucun test d'intégration contre la vraie base tant que le schéma n'est pas
   appliqué : ne prétends jamais qu'une intégration réussit sans l'avoir exécutée.
   Signale ce qui reste à valider (schéma appliqué, test d'intégration).
-- Si une dépendance (framework HTTP, runner, validation) est absente, fournis
-  un exemple non exécuté et liste les dépendances manquantes.
+- Si une dépendance dont l'endpoint a besoin manque (accès aux données,
+  validation, runner de test), installe-la avec le gestionnaire du projet, en
+  suivant ce que `CLAUDE.md` prévoit, puis branche-la. Si le framework HTTP
+  lui-même est absent, arrête-toi et signale-le.
 - Nom de fichier et de ressource cohérents avec le projet (pluriel/singulier,
   casse) ; pas de secrets en dur, config via l'environnement.
 - Si l'endpoint de `$ressource` existe déjà, arrête-toi et signale-le

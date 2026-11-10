@@ -2,6 +2,15 @@
 
 Plugin Claude Code regroupant mes skills, sous-agents et hooks personnels (issus du `.claude/` de `ma-todo`).
 
+## Versions
+
+- **1.1.0** : l'arsenal devient générique. Les cinq agents ne décrivent plus `ma-todo` : ils lisent le `CLAUDE.md` du
+  projet courant pour connaître sa pile, son runner de test et ses conventions. `scaffold-api` branche l'accès aux données
+  sur la connexion du projet et installe la dépendance qui manque, au lieu de seulement la lister. `create-migration`
+  suit le modèle de données de `CLAUDE.md`.
+- **1.0.1** : gardien pré-commit en hook `command` (`git grep`).
+- **1.0.0** : première publication.
+
 ## Contenu
 
 | Type   | Éléments                                                                                     |
@@ -68,7 +77,7 @@ Le plugin n'embarque aucun serveur MCP ; chaque projet ou poste doit les reconne
   d'installation. Ils s'exécutent avec `bash` (pas de bit exécutable requis) et s'appuient sur `grep -E` / `--include` /
   `--exclude-dir`, présents en BSD et GNU. Ils scannent le répertoire courant : à lancer depuis la racine du projet.
 - `scaffold-api`, `scaffold-component` : aucune dépendance de chemin ; elles lisent `CLAUDE.md`/`package.json` du projet
-  courant. `scaffold-component` écrit dans `components/` (convention de `ma-todo`).
+  courant. `scaffold-component` écrit dans `components/`.
 - `create-migration` : dépend du MCP `postgres` (voir ci-dessus) et écrit dans `migrations/`. `date +%Y%m%d%H%M%S` est portable.
 - `deploy-stage` : suppose git, un remote `origin`, Docker et un fichier `deploy.staging.json` à la racine (sinon dry-run).
 - Hook de notification : `osascript` n'est exécuté que sur macOS (`uname -s` = `Darwin`) ; ailleurs, le hook émet

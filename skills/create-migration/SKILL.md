@@ -33,8 +33,8 @@ allowed-tools: mcp__postgres__search_objects
      ```
 
    - le `-- down` annule réellement le `-- up`, dans l'ordre inverse ;
-   - noms d'objets et de colonnes cohérents avec le schéma réel et la langue
-     du projet (français) ;
+   - noms d'objets et de colonnes cohérents avec le schéma réel et le modèle
+     de données décrit dans `CLAUDE.md` ;
    - ne supprime ni ne réécris de données sans le signaler en commentaire.
 4. Rapporte le chemin du fichier, un résumé du SQL, les écarts constatés à
    l'étape 2 et les risques (perte de données, verrous, `-- down` non
